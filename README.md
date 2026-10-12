@@ -73,8 +73,8 @@ swiftc -target arm64-apple-macos14.0 -O -parse-as-library -disable-sandbox \
 命令行版本（免编译，直接用 swift 跑）：
 
 ```sh
-swift Sources/airpods_health.swift                # 电量 / 固件 / 序列号（免 root）
-sudo swift Sources/airpods_health.swift --health  # 扫描 analyticsd 电池健康聚合（需 root）
+swift Sources/airpods_health.swift                # 电量 / 固件版本 / 序列号（免 root）
+sudo swift Sources/airpods_health.swift --health  # 读取系统电池健康聚合数据（需 root）
 swift Sources/airpods_health.swift --json         # 机器可读输出
 ```
 
@@ -84,37 +84,19 @@ swift Sources/airpods_health.swift --json         # 机器可读输出
 ./IORegistryViewer --registry
 ```
 
-## AirPods 页数据链路（逆向结论）
+## 使用提示
 
-AirPods 是设备页里接入最深的一个，其数据链路与其他设备页不同，需要额外两层：
-
-```text
-实时层  system_profiler SPBluetoothDataType        （免 root，15s 刷新）
-   │
-健康层  bluetoothd → 耳机 metric Broker 拉取
-        → TMAP 解码 → CoreAnalytics 事件
-        com.apple.Bluetooth.AccessoryBatteryHealthV4Metric
-        → /var/db/analyticsd/{config,state}.sqlite  （root-only，提权拷贝后解析）
-   │
-展示层  IORegistry 只读属性树 + SwiftUI/Charts 可视化
-```
-
-关键点：
-
-- macOS 蓝牙面板只暴露「电量百分比 + 固件版本」，**没有健康度 UI**；循环计数 / 容量 / 退化曲线由耳机固件作为 CoreAnalytics 指标上报。
-- 耳机只在**充电会话结束 / 放回盒子 / 每日翻转**时上报健康数据，所以循环计数一天变几次属正常。
-- 充电吞吐热力图字段名里的 `ma_per_min` 具有误导性：**实际单位是 mA·min（毫安分钟）**，换算 `mAh = 原值 / 60`。
+- AirPods 的健康数据由耳机在**充电会话结束 / 放回盒子 / 每日翻转**时更新，因此循环计数这类数值一天变化几次属正常；页面顶部的「数据最后上报时间」表示数据新鲜度。
+- IORegistry 分类为启发式结果，节点可能同时落在多个类别中；导出 JSON 会保留每个属性的完整类型信息。
+- 浏览 IORegistry 与读取 Mac 电池不需要管理员权限；仅 AirPods 健康页需要一次授权。
 
 ## 目录结构
 
 ```text
 Sources/   IORegistryViewer.swift（主程序：IORegistry 浏览器 + 设备页，SwiftUI + IOKit + SQLite3）
            airpods_health.swift（CLI 读取器）
-           airpods_throughput_evidence.py（STFW 固件热力图证据导出，需 capstone）
-Docs/      A2968_AirPodsPro2充电盒_固件历史分析.md
-           充电吞吐热力图_逆向结论.md
-           connectAnalytics_本机可读性_调查报告.md
-           AirPods页_使用说明.txt（AirPods 页）
+           airpods_throughput_evidence.py（数据导出辅助脚本，需 capstone）
+Docs/      AirPods页_使用说明.txt 及若干技术说明文档
 Preview/   界面截图（trend / heatmap，含深色模式）与 verification.txt 验证输出
 scripts/   build.sh / make-dmg.sh
 Resources/ AppIcon.icns
@@ -122,9 +104,9 @@ Resources/ AppIcon.icns
 
 ## 隐私与免责
 
-本工具**只读取本机已有数据**，不发起任何网络请求、不上传任何信息（系统自身的 analyticsd 按苹果常规策略聚合上报，与本工具无关）。
+本工具**只读取本机已有数据**，不发起任何网络请求、不上传任何信息。
 
-本项目为个人对本机数据的读取与固件静态分析，与 Apple Inc. 无关联。请自行承担使用风险。
+本项目为个人开发的本机数据读取工具，与 Apple Inc. 无关联。请自行承担使用风险。
 
 ## 许可
 
