@@ -49,15 +49,15 @@
 首次运行因未做苹果公证签名，需**右键点 App → 打开 → 再点打开**；若仍被拦，终端执行：
 
 ```sh
-xattr -cr "/Applications/AirPods电池健康查看器.app"
+xattr -cr "/Applications/IORegistry 查看器.app"
 ```
 
-AirPods 页的详细使用说明见 [`Docs/使用说明.txt`](Docs/使用说明.txt)。
+AirPods 页的详细使用说明见 [`Docs/AirPods页_使用说明.txt`](Docs/AirPods页_使用说明.txt)。
 
 ## 从源码构建
 
 ```sh
-./scripts/build.sh      # 产出 build/AirPods电池健康查看器.app
+./scripts/build.sh      # 产出 build/IORegistry 查看器.app
 ./scripts/make-dmg.sh   # 产出 dist/ioreg-gui-<version>.dmg
 ```
 
@@ -65,7 +65,7 @@ AirPods 页的详细使用说明见 [`Docs/使用说明.txt`](Docs/使用说明.
 
 ```sh
 swiftc -target arm64-apple-macos14.0 -O -parse-as-library -disable-sandbox \
-       -o AirPodsHealthViewer Sources/AirPodsHealthViewer.swift
+       -o IORegistryViewer Sources/IORegistryViewer.swift
 ```
 
 > `-disable-sandbox` 用于规避受限环境下编译器无法为 SwiftUI 宏插件启动子沙箱的问题（否则报 `SwiftUIMacros ... malformed response`）。
@@ -81,7 +81,7 @@ swift Sources/airpods_health.swift --json         # 机器可读输出
 启动时带 `--registry` 参数可直接打开 IORegistry 页：
 
 ```sh
-./AirPodsHealthViewer --registry
+./IORegistryViewer --registry
 ```
 
 ## AirPods 页数据链路（逆向结论）
@@ -108,13 +108,13 @@ AirPods 是设备页里接入最深的一个，其数据链路与其他设备页
 ## 目录结构
 
 ```text
-Sources/   AirPodsHealthViewer.swift（主程序：IORegistry 浏览器 + 设备页，SwiftUI + IOKit + SQLite3）
+Sources/   IORegistryViewer.swift（主程序：IORegistry 浏览器 + 设备页，SwiftUI + IOKit + SQLite3）
            airpods_health.swift（CLI 读取器）
            airpods_throughput_evidence.py（STFW 固件热力图证据导出，需 capstone）
 Docs/      A2968_AirPodsPro2充电盒_固件历史分析.md
            充电吞吐热力图_逆向结论.md
            connectAnalytics_本机可读性_调查报告.md
-           使用说明.txt（AirPods 页）
+           AirPods页_使用说明.txt（AirPods 页）
 Preview/   界面截图（trend / heatmap，含深色模式）与 verification.txt 验证输出
 scripts/   build.sh / make-dmg.sh
 Resources/ AppIcon.icns

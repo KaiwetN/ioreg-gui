@@ -1,10 +1,11 @@
-// AirPodsHealthViewer.swift — Apple 配件电池健康可视化（v2 · 侧边栏版）
+// IORegistryViewer.swift — macOS IORegistry 只读可视化 + Apple 配件电池健康（v2 · 侧边栏版）
 //
-// macOS 14+；构建：swiftc -O -parse-as-library -o AirPodsHealthViewer AirPodsHealthViewer.swift
-// 运行：./AirPodsHealthViewer
+// macOS 14+；构建：swiftc -O -parse-as-library -disable-sandbox -o IORegistryViewer IORegistryViewer.swift
+// 运行：./IORegistryViewer          （加 --registry 直接进入 IORegistry 页）
 //
 // 结构：
-//   侧边栏：AirPods（当前页，全功能）+ 其他设备（预留位）
+//   侧边栏：全部设备 / IORegistry（核心，只读浏览器）+ AirPods / 充电·电源 / Mac 电池 + 其他设备（预留位）
+//   IORegistry 页：多 plane 枚举 / 节点列表 / 属性树 / 分类筛选 / 搜索 / typed JSON 导出
 //   AirPods 页：实时状态三环 / 双耳健康（循环·容量趋势·服役）/ 关机事件历史 / 双耳充电分布 / 原始数据
 //
 // 数据链路（逆向结论）：
@@ -793,7 +794,7 @@ enum DataSource {
     static func mergeCachedMilestones(into records: [HealthRecord]) -> [HealthRecord] {
         let fm = FileManager.default
         let dir = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("AirPodsHealthViewer", isDirectory: true)
+            .appendingPathComponent("IORegistryViewer", isDirectory: true)
         try? fm.createDirectory(at: dir, withIntermediateDirectories: true)
         let cacheURL = dir.appendingPathComponent("health_cache.json")
         var cache = [String: [String: String]]()
@@ -2657,14 +2658,14 @@ struct RawTab: View {
 // MARK: - App 入口
 
 @main
-struct AirPodsHealthViewerApp: App {
+struct IORegistryViewerApp: App {
     init() {
         if CommandLine.arguments.contains("--registry-self-test") {
             exit(RegistryReader.selfTest() ? 0 : 1)
         }
     }
     var body: some Scene {
-        WindowGroup("配件电池健康") {
+        WindowGroup("配件健康") {
             ContentView()
         }
         .windowResizability(.contentMinSize)

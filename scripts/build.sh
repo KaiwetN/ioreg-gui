@@ -1,13 +1,13 @@
 #!/bin/bash
-# build.sh — 构建 AirPods 电池健康查看器.app（通用二进制 x86_64 + arm64）
+# build.sh — 构建 IORegistry 查看器.app（通用二进制 x86_64 + arm64）
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
-SRC="$ROOT/Sources/AirPodsHealthViewer.swift"
-APP_NAME="AirPodsHealthViewer"
-DISPLAY_NAME="AirPods 电池健康查看器"
-BUNDLE_ID="com.kaiwetlab.airpods-health-viewer"
+SRC="$ROOT/Sources/IORegistryViewer.swift"
+APP_NAME="IORegistryViewer"
+DISPLAY_NAME="IORegistry 查看器"
+BUNDLE_ID="com.kaiwetlab.ioregistry-viewer"
 VERSION="1.0"
 BUILD="$ROOT/build/$DISPLAY_NAME.app"
 

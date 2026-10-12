@@ -4,7 +4,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
-DISPLAY_NAME="AirPods 电池健康查看器"
+DISPLAY_NAME="IORegistry 查看器"
 VERSION="1.0"
 APP="$ROOT/build/$DISPLAY_NAME.app"
 STAGE="$ROOT/build/dmg-stage"

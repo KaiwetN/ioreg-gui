@@ -1,10 +1,11 @@
 ════════════════════════════════════════════
-  AirPods 电池健康查看器 · 使用说明
+  IORegistry 查看器 · AirPods 页使用说明
 ════════════════════════════════════════════
 
 【这是什么】
-读取 AirPods 耳机与充电盒的深度电池健康数据
-（Apple 从未在 macOS 上提供这个功能）：
+本工具主体是 IORegistry 只读可视化（侧边栏「全部设备 / IORegistry」）。
+本文档说明其中的「AirPods Pro」页 —— 读取 AirPods 耳机与充电盒的
+深度电池健康数据（Apple 从未在 macOS 上提供这个功能）：
 
 • 实时电量 —— 盒 / 左耳 / 右耳三环表（15 秒自动刷新）
 • 循环计数 —— 左右耳独立计，完整充放电周期 +1
@@ -19,7 +20,7 @@
 • AirPods（需连接过这台 Mac）
 
 【首次运行（重要）】
-1. 解压得到「AirPods电池健康查看器.app」
+1. 解压得到「IORegistry 查看器.app」
 2. 因为本工具未经过苹果公证收费签名，首次打开：
    右键点击 App → 「打开」 → 再点「打开」
    （如果仍提示无法验证，在终端执行：
@@ -40,7 +41,7 @@
 • 终端执行（移除免密规则）：
   sudo rm -f /etc/sudoers.d/airpods-health /usr/local/bin/airpods_copy.sh
 • 可选（清除本地健康缓存）：
-  rm -rf "$HOME/Library/Application Support/AirPodsHealthViewer"
+  rm -rf "$HOME/Library/Application Support/IORegistryViewer"
 
 【隐私】
 本工具只读取本机已有的数据，不上传任何信息。
