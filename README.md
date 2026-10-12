@@ -100,4 +100,4 @@ Resources/ AppIcon.icns
 
 ## 许可
 
-暂未指定开源许可证（私有仓库）。如需对外分发请先补充 LICENSE。
+暂未指定开源许可证 —— 按默认版权保留（All rights reserved）。如需允许他人使用 / 修改 / 分发，请先补充 LICENSE。
