@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+._*
+
+# 构建与打包产物
+build/
+dist/
+*.dmg
+*.app/
+
+# Swift
+.build/
+*.o
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 运行时缓存
+app.log
+*.log

@@ -1,0 +1,13 @@
+PASS: empty/single/current/cached curves, zero/missing matrix, firmware profile, physical units: 144027 mA·min = 2400.45 mAh
+Rendered empty-trend: 1520 × 780
+Rendered single-trend: 1520 × 1128
+Rendered sparse-heatmap: 1520 × 1830
+Rendered zero-heatmap: 1520 × 966
+Rendered trend-0: 1800 × 1128
+Rendered trend-dark: 1520 × 1128
+Rendered trend-1: 1800 × 1128
+Rendered heatmap-0: 1800 × 1830
+Rendered heatmap-dark: 1520 × 1830
+Rendered heatmap-card: 1800 × 2042
+Rendered heatmap-1: 1800 × 1830
+PASS: real data retains all 45 cells per ear, including explicit zeroes
